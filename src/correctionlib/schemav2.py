@@ -437,9 +437,7 @@ class Correction(Model):
         )
 
     def to_evaluator(self) -> correctionlib.highlevel.Correction:
-        # TODO: consider refactoring highlevel.Correction to be independent
-        cset = CorrectionSet(schema_version=2, corrections=[self])
-        return correctionlib.highlevel.CorrectionSet(cset)[self.name]
+        return correctionlib.highlevel.Correction.from_string(self.json())
 
 
 class CompoundCorrection(Model):

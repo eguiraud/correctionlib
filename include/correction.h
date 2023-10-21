@@ -222,6 +222,8 @@ class Correction {
     const Variable& output() const { return output_; };
     double evaluate(const std::vector<Variable::Type>& values) const;
 
+    static Ref from_string(const char * data);
+
   private:
     std::string name_;
     std::string description_;

@@ -3,7 +3,7 @@
 """
 import json
 from numbers import Integral
-from typing import Any, Callable, Dict, Iterator, List, Mapping, Union
+from typing import Any, Callable, Dict, Iterator, List, Mapping, Optional, Union
 
 import numpy
 from packaging import version
@@ -137,10 +137,19 @@ class Correction:
     a CorrectionSet object, rather than directly by construction.
     """
 
-    def __init__(self, base: correctionlib._core.Correction, context: "CorrectionSet"):
+    def __init__(
+        self,
+        base: correctionlib._core.Correction,
+        context: Optional["CorrectionSet"] = None,
+    ):
         self._base = base
         self._name = base.name
         self._context = context
+
+    @staticmethod
+    def from_string(json: str):
+        core_c = correctionlib._core.Correction.from_string(json)
+        return Correction(core_c)
 
     def __getstate__(self) -> Dict[str, Any]:
         return {"_context": self._context, "_name": self._name}

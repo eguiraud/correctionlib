@@ -645,6 +645,19 @@ Correction::Correction(const JSONObject& json) :
   initialized_ = true;
 }
 
+Correction::Ref Correction::from_string(const char * data) {
+  rapidjson::Document json;
+  rapidjson::ParseResult ok = json.Parse<rapidjson::kParseNanAndInfFlag>(data);
+  if (!ok) {
+    throw std::runtime_error(
+        std::string("JSON parse error: ") + rapidjson::GetParseError_En(ok.Code())
+        + " at offset " + std::to_string(ok.Offset())
+        );
+  }
+  if ( ! json.IsObject() ) { throw std::runtime_error("Expected Correction object"); }
+  return std::make_shared<Correction>(json);
+}
+
 size_t Correction::input_index(const std::string_view name) const {
   size_t idx = 0;
   for (const auto& var : inputs_) {

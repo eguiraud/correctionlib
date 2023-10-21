@@ -75,6 +75,7 @@ PYBIND11_MODULE(_core, m) {
         .def_property_readonly("type", &Variable::typeStr);
 
     py::class_<Correction, std::shared_ptr<Correction>>(m, "Correction")
+        .def_static("from_string", &Correction::from_string)
         .def_property_readonly("name", &Correction::name)
         .def_property_readonly("description", &Correction::description)
         .def_property_readonly("version", &Correction::version)
